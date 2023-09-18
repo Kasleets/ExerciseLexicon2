@@ -11,29 +11,10 @@ using static ExerciseLexicon2.AgeGroupCounters;
 
 namespace ExerciseLexicon2
 {
-    public enum AgeCategory                                                     //Creating enum category instead of repeating them.
-    {
-        Invalid,
-        Baby,
-        Youth,
-        Adult,
-        Senior,
-        Elder
-    }
 
     internal class Utilities                                                    // Gathering of all variables and methods in one space
     {
-        public static AgeGroupCounters Counters = new AgeGroupCounters();                                    // Debug, if the menu is called multiple times to start with a fresh account
-
-        public static AgeCategory GetAgeCategory(int age)                       // Using enum to refine the code according to DRY-s = Don't Repeat Yourself stupid.
-        {                                                                       // Using enum to refine the code according to DRY-s = Don't Repeat Yourself stupid.
-            if (age < 0)    return AgeCategory.Invalid;                         // Using enum to refine the code according to DRY-s = Don't Repeat Yourself stupid.
-            if (age < 5)    return AgeCategory.Baby;                            // Using enum to refine the code according to DRY-s = Don't Repeat Yourself stupid.
-            if (age < 20)   return AgeCategory.Youth;                           // Using enum to refine the code according to DRY-s = Don't Repeat Yourself stupid.
-            if (age < 64)   return AgeCategory.Adult;                           // Using enum to refine the code according to DRY-s = Don't Repeat Yourself stupid.
-            if (age < 100)  return AgeCategory.Senior;                          // Using enum to refine the code according to DRY-s = Don't Repeat Yourself stupid.
-                            return AgeCategory.Elder;                           // Using enum to refine the code according to DRY-s = Don't Repeat Yourself stupid.
-        }
+        public static AgeGroupCounters Counters = new AgeGroupCounters();       // Debug, if the menu is called multiple times to start with a fresh account
 
         public static bool IsValidAge(int age)                                  // Wrong age check method
         {
@@ -53,7 +34,6 @@ namespace ExerciseLexicon2
                 else ErrorMessage();
             }
         }
-
         public static void IncrementalAgeCategoryCounters(int age)              // Creating a method for a clean switch case menu for ages that increase the Counters.
         {
             var ageCategory = GetAgeCategory(age);                              //Receiving the age categories from enum
@@ -131,7 +111,7 @@ namespace ExerciseLexicon2
         {
             IncrementalAgeCategoryCounters(age);
         }
-        public static void CustomerAges(int CustomerAmount)                                         // Supporting method for the CustomerGroup, checking in which age category is predefined customer.
+        public static void CustomerAges(int CustomerAmount)                                                  // Supporting method for the CustomerGroup, checking in which age category is predefined customer.
         {
             Counters.ResetCount();                                                                           // Making sure we're working with fresh set of data
             for (int i = 0; i < CustomerAmount; i++)                                                         // Loop that's going through the whole group
@@ -143,7 +123,6 @@ namespace ExerciseLexicon2
         public static int CalculateTotalCost()                                                               // Simple method calculation of available age groups.
         {
             return (Counters.YouthCount * 80) + (Counters.AdultCount * 120) + (Counters.SeniorCount * 90);
-            
         }
         public static void CustomerMessage()                                                                 // Simple method of multiplying the message with a loop
         {
@@ -154,7 +133,6 @@ namespace ExerciseLexicon2
             {
                 Console.Write(customerMessage + " ");
             }
-
         }
         public static bool CustomSplitter()                                                                 // Method to fish out the third word in a sentence, programmed to avoid exceptions / spaces / tabs and similar
         {
@@ -162,8 +140,8 @@ namespace ExerciseLexicon2
             {
                 Console.WriteLine("Please input your sentence with at least 3 words");
                 string? customSplitter = Console.ReadLine();
-                var words = Regex.Split(customSplitter ?? string.Empty, @"\s+");            // Regex.Split is more advanced .Split form avoiding null exception with ??, avoiding tabs/multiple spaces. 
-                                                                                            // "@" makes string literal, escape sequences not processed. \s+ is for white spaces and line brakes to match inbetween incosistences
+                var words = Regex.Split(customSplitter ?? string.Empty, @"\s+");                            // Regex.Split is more advanced .Split form avoiding null exception with ??, avoiding tabs/multiple spaces. 
+                                                                                                            // "@" makes string literal, escape sequences not processed. \s+ is for white spaces and line brakes to match inbetween incosistences
                 if (words != null && words.Length >= 3)
                 {
                     Console.WriteLine($"The third word in your sentence is: {words[2]}");
@@ -171,11 +149,9 @@ namespace ExerciseLexicon2
                 }
                 else
                 {
-                    Console.WriteLine("Please write at least 3 word in the sentence. ");    //loop automatically returns false
+                    Console.WriteLine("Please write at least 3 word in the sentence. ");                    //loop automatically returns false
                 }
             }
-            
         }
-
     }
 }
