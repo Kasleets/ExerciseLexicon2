@@ -1,4 +1,6 @@
-﻿//using System.Runtime.CompilerServices;
+﻿// preparation to create a logbook, work in progress
+
+//using System.Runtime.CompilerServices;
 //using System.Security.Cryptography.X509Certificates;
 
 //namespace ExerciseLexicon2
