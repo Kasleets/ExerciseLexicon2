@@ -3,44 +3,91 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using static ExerciseLexicon2.AgeGroupCounters;
 
 namespace ExerciseLexicon2
 {
-    // Unused style of assignment
-    //enum CustomerType 
-    //{
-    //    Youth, //0
-    //    Adult, //1
-    //    Senior //2
-    //}
+    public enum AgeCategory                                                     //Creating enum category instead of repeating them.
+    {
+        Invalid,
+        Baby,
+        Youth,
+        Adult,
+        Senior,
+        Elder
+    }
 
     internal class Utilities                                                    // Gathering of all variables and methods in one space
     {
-        //public static int YouthCount = 0;                                       // Counter for repsective age group.
-        //public static int AdultCount = 0;                                       // Counter for repsective age group.
-        //public static int SeniorCount = 0;                                      // Counter for repsective age group.
-        //public static int ElderCount = 0;                                       // Counter for repsective age group.
-        //public static int BabyCount = 0;                                        // Counter for repsective age group.
+        public static AgeGroupCounters Counters = new AgeGroupCounters();                                    // Debug, if the menu is called multiple times to start with a fresh account
 
+        public static AgeCategory GetAgeCategory(int age)                       // Using enum to refine the code according to DRY-s = Don't Repeat Yourself stupid.
+        {                                                                       // Using enum to refine the code according to DRY-s = Don't Repeat Yourself stupid.
+            if (age < 0)    return AgeCategory.Invalid;                         // Using enum to refine the code according to DRY-s = Don't Repeat Yourself stupid.
+            if (age < 5)    return AgeCategory.Baby;                            // Using enum to refine the code according to DRY-s = Don't Repeat Yourself stupid.
+            if (age < 20)   return AgeCategory.Youth;                           // Using enum to refine the code according to DRY-s = Don't Repeat Yourself stupid.
+            if (age < 64)   return AgeCategory.Adult;                           // Using enum to refine the code according to DRY-s = Don't Repeat Yourself stupid.
+            if (age < 100)  return AgeCategory.Senior;                          // Using enum to refine the code according to DRY-s = Don't Repeat Yourself stupid.
+                            return AgeCategory.Elder;                           // Using enum to refine the code according to DRY-s = Don't Repeat Yourself stupid.
+        }
+
+        public static void IncrementalAgeCategoryCounters(int age)              // Creating a method for a clean switch case menu for ages that increase the Counters.
+        {
+            var ageCategory = GetAgeCategory(age);                              //Receiving the age categories from enum
+            switch (ageCategory)
+            {
+                    case AgeCategory.Invalid:
+                        Console.WriteLine("Invalid age provided.");
+                        break;
+                    case AgeCategory.Baby:
+                        Counters.BabyCount++;
+                        break;
+                    case AgeCategory.Youth:
+                        Counters.YouthCount++;
+                        break;
+                    case AgeCategory.Adult:
+                        Counters.AdultCount++;
+                        break;
+                    case AgeCategory.Senior:
+                        Counters.SeniorCount++;
+                        break;
+                    case AgeCategory.Elder:
+                        Counters.ElderCount++;
+                        break;
+            }
+        }
         public static void AgeCheck(int age = 0)                                // AgeCheck method for case: 1 menu choice
         {
             Console.WriteLine("Please state your age");
             string? aInput = Console.ReadLine();                                // Reading user input 
 
             int.TryParse(aInput, out age);                                      // Converting user input into an integer value
-
-            if (age < 20 && age > 5) Console.WriteLine("Youth Price: 80kr");                                 //using predefined logic in which age-category customer is
-            else if (age > 100)      Console.WriteLine("Elders over 100 can enjoy our services for free. ");      //using predefined logic in which age-category customer is
-            else if (age > 64)       Console.WriteLine("Senior Price: 90kr");                                     //using predefined logic in which age-category customer is
-            else if (age < 5)        Console.WriteLine("Infants under the age of 5 come in free.");               //using predefined logic in which age-category customer is
-            else                                                                                             //using predefined logic in which age-category customer is
+            var ageCategory = GetAgeCategory(age);                              //Receiving the age categories from enum
+            switch (ageCategory)
             {
-                Console.WriteLine("Standard Adult pricing: 120kr");
+                case AgeCategory.Invalid:
+                    Console.WriteLine("Invalid age provided.");
+                    break;
+                case AgeCategory.Baby:
+                    Console.WriteLine($"{PriceConstants.FreeEntry} ");
+                    break;
+                case AgeCategory.Youth:
+                    Console.WriteLine($"The price for is: {PriceConstants.YouthPrice}");
+                    break;
+                case AgeCategory.Adult:
+                    Console.WriteLine($"The price for is: {PriceConstants.AdultPrice}");
+                    break;
+                case AgeCategory.Senior:
+                    Console.WriteLine($"The price for is: {PriceConstants.SeniorPrice}");
+                    break;
+                case AgeCategory.Elder:
+                    Console.WriteLine($"{PriceConstants.FreeEntry}");
+                    break;
             }
-            return;
         }
         public static int CustomerGroup(int CustomerAmount = 0, int TotalPrice = 0)                          // Calculating customers group age and the cost for the whole group.
         {
@@ -56,7 +103,7 @@ namespace ExerciseLexicon2
                 return 0;
             }
         }
-        public static AgeGroupCounters Counters = new AgeGroupCounters();                                    // Debug, if the menu is called multiple times to start with a fresh account
+
         public static void CustomerAges(int CustomerAmount, int age)                                         // Supporting method for the CustomerGroup, checking in which age category is predefined customer.
         {
             Counters.ResetCount();                                                                           // Making sure we're working with fresh set of data
@@ -92,10 +139,8 @@ namespace ExerciseLexicon2
                         {
                             validInput = true;                                                               // Using predefined logic to save the customer to a variable group
                         }
-                        else
-                        {
-                            Console.WriteLine("Age can't be negative, try again. ");
-                        }
+                        else validInput = false;
+
                         if (age < 5) Counters.BabyCount++;                                                            // Using predefined logic to save the customer to a variable group
                         else if (age > 5 && age < 20) Counters.YouthCount++;                                          // Using predefined logic to save the customer to a variable group
                         else if (age >= 20 && age < 64) Counters.AdultCount++;                                        // Using predefined logic to save the customer to a variable group
