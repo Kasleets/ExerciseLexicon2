@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -68,11 +69,28 @@ namespace ExerciseLexicon2
                     Console.WriteLine("Please state age of the customer: " + (i + 1));              // Prompt to user to determine age of every each attendee
                     string? aInput = Console.ReadLine();                                                     // Reading off the user prompt
 
+                    try
+                    {
+                        age = int.Parse(aInput);
+                        if (age >= 0)                                                               // TODO: Checking for negative, need to cleanup the code a bit more, making double work here
+                        {
+                            validInput = true;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Age cannot be negative, please try again.");
+                        }
+                    }
+                    catch (FormatException)
+                    {
+                        Console.WriteLine("Please enter a valid number for age. ");
+                    }
+                    
                     if (int.TryParse(aInput, out age))                                                       // Converting string to integer value
                     {
                         if (age >= 0)                                                                        // Checking for negative age
                         {
-                            validInput = true;                                                                    // Using predefined logic to save the customer to a variable group
+                            validInput = true;                                                               // Using predefined logic to save the customer to a variable group
                         }
                         else
                         {
