@@ -35,6 +35,25 @@ namespace ExerciseLexicon2
                             return AgeCategory.Elder;                           // Using enum to refine the code according to DRY-s = Don't Repeat Yourself stupid.
         }
 
+        public static bool IsValidAge(int age)                                  // Wrong age check method
+        {
+            var ageCategory = GetAgeCategory(age);
+            return ageCategory != AgeCategory.Invalid;
+        }
+        public static int GetValidCustomerAge(int customerNumber)
+        {
+            while(true)
+            {
+                Console.WriteLine($"Please input age of the customer: {customerNumber} ");
+                string? aInput = Console.ReadLine();
+                if (int.TryParse(aInput, out int age) && IsValidAge(age))
+                {
+                    return age;
+                }
+                else ErrorMessage();
+            }
+        }
+
         public static void IncrementalAgeCategoryCounters(int age)              // Creating a method for a clean switch case menu for ages that increase the Counters.
         {
             var ageCategory = GetAgeCategory(age);                              //Receiving the age categories from enum
@@ -89,69 +108,36 @@ namespace ExerciseLexicon2
                     break;
             }
         }
-        public static int CustomerGroup(int CustomerAmount = 0, int TotalPrice = 0)                          // Calculating customers group age and the cost for the whole group.
+        public static int GetNumberOfCustomers()                                                  // Calculating customers group age and the cost for the whole group.
         {
-            Console.WriteLine("How many people will attend?");
-            string? aInput = Console.ReadLine();
-            if (int.TryParse(aInput, out CustomerAmount))                                                    // Parsing string to integer
+            while (true)
             {
-                return CustomerAmount;                                                                       // Returning the value
-            }
-            else
-            {
-                Console.WriteLine("Invalid input, no customers.");                                           // Making sure that there is amount of customers.
-                return 0;
+                Console.WriteLine("How many people will attend?");
+                string? aInput = Console.ReadLine();
+                if (int.TryParse(aInput, out int customerAmount) && customerAmount > 0)          // Parsing string to integer
+                {
+                    return customerAmount;                                                       // Returning the value
+                }
+                else ErrorMessage();                                                              
+                
             }
         }
+        public static int CustomerGroup()
+        {
+            return GetNumberOfCustomers();
+        }
 
-        public static void CustomerAges(int CustomerAmount, int age)                                         // Supporting method for the CustomerGroup, checking in which age category is predefined customer.
+        public static void ProcessCustomerAge(int age)
+        {
+            IncrementalAgeCategoryCounters(age);
+        }
+        public static void CustomerAges(int CustomerAmount)                                         // Supporting method for the CustomerGroup, checking in which age category is predefined customer.
         {
             Counters.ResetCount();                                                                           // Making sure we're working with fresh set of data
             for (int i = 0; i < CustomerAmount; i++)                                                         // Loop that's going through the whole group
             {
-                bool validInput = false;
-
-                while (!validInput)
-                {
-                    Console.WriteLine("Please state age of the customer: " + (i + 1));              // Prompt to user to determine age of every each attendee
-                    string? aInput = Console.ReadLine();                                                     // Reading off the user prompt
-
-                    try
-                    {
-                        age = int.Parse(aInput);
-                        if (age >= 0)                                                               // TODO: Checking for negative, need to cleanup the code a bit more, making double work here
-                        {
-                            validInput = true;
-                        }
-                        else
-                        {
-                            Console.WriteLine("Age cannot be negative, please try again.");
-                        }
-                    }
-                    catch (FormatException)
-                    {
-                        Console.WriteLine("Please enter a valid number for age. ");
-                    }
-                    
-                    if (int.TryParse(aInput, out age))                                                       // Converting string to integer value
-                    {
-                        if (age >= 0)                                                                        // Checking for negative age
-                        {
-                            validInput = true;                                                               // Using predefined logic to save the customer to a variable group
-                        }
-                        else validInput = false;
-
-                        if (age < 5) Counters.BabyCount++;                                                            // Using predefined logic to save the customer to a variable group
-                        else if (age > 5 && age < 20) Counters.YouthCount++;                                          // Using predefined logic to save the customer to a variable group
-                        else if (age >= 20 && age < 64) Counters.AdultCount++;                                        // Using predefined logic to save the customer to a variable group
-                        else if (age > 64 && age < 100) Counters.SeniorCount++;                                       // Using predefined logic to save the customer to a variable group
-                        else if (age > 100) Counters.ElderCount++;                                                    // Using predefined logic to save the customer to a variable group
-                    }
-                    else
-                    {
-                        Console.WriteLine("The age is incorrect, try again.");                               // Prompt to the user to write a proper age number
-                    }
-                }
+                int age = GetValidCustomerAge(i + 1);
+                ProcessCustomerAge(age);                 
             }
         }
         public static int CalculateTotalCost()                                                               // Simple method calculation of available age groups.

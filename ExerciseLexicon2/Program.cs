@@ -33,7 +33,7 @@ namespace ExerciseLexicon2
                         break;
                     case "2":                                                                              // Menu choice 2, checking the cost for the entire group
                         int customerCount = CustomerGroup();
-                        CustomerAges(customerCount, 0);
+                        CustomerAges(customerCount);
                         Console.WriteLine($"Amount of people: {customerCount}\n" +
                                           $"Total Cost for the group: {CalculateTotalCost()}kr");
                         break;

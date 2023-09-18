@@ -29,7 +29,11 @@ namespace ExerciseLexicon2
             public const int SeniorPrice = 90;
             public const string FreeEntry = "This age group receives free entry.";
         }
-       
+        public static void ErrorMessage()
+        {
+            Console.WriteLine("Invalid input, pelase try again. ");
+        }
+
     }
 
 
