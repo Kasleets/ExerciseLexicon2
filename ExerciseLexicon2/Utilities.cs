@@ -16,89 +16,98 @@ namespace ExerciseLexicon2
     //    Senior //2
     //}
 
-    internal class Utilities
+    internal class Utilities                                                    // Gathering of all variables and methods in one space
     {
-        public static int YouthCount = 0;
-        public static int AdultCount = 0;
-        public static int SeniorCount = 0;
-        public static int ElderCount = 0;
-        public static int BabyCount = 0;
-        public static void AgeCheck(int age = 0)
+        //public static int YouthCount = 0;                                       // Counter for repsective age group.
+        //public static int AdultCount = 0;                                       // Counter for repsective age group.
+        //public static int SeniorCount = 0;                                      // Counter for repsective age group.
+        //public static int ElderCount = 0;                                       // Counter for repsective age group.
+        //public static int BabyCount = 0;                                        // Counter for repsective age group.
+
+        public static void AgeCheck(int age = 0)                                // AgeCheck method for case: 1 menu choice
         {
             Console.WriteLine("Please state your age");
-            string? aInput = Console.ReadLine();
+            string? aInput = Console.ReadLine();                                // Reading user input 
 
-            int.TryParse(aInput, out age);
+            int.TryParse(aInput, out age);                                      // Converting user input into an integer value
 
-            if (age < 20 && age > 5) Console.WriteLine("Youth Price: 80kr");
-            else if (age > 100) Console.WriteLine("Elders over 100 can enjoy our services for free. ");
-            else if (age > 64)  Console.WriteLine("Senior Price: 90kr");
-            else if (age < 5)   Console.WriteLine("Infants under the age of 5 come in free.");
-            else
+            if (age < 20 && age > 5) Console.WriteLine("Youth Price: 80kr");                                 //using predefined logic in which age-category customer is
+            else if (age > 100)      Console.WriteLine("Elders over 100 can enjoy our services for free. ");      //using predefined logic in which age-category customer is
+            else if (age > 64)       Console.WriteLine("Senior Price: 90kr");                                     //using predefined logic in which age-category customer is
+            else if (age < 5)        Console.WriteLine("Infants under the age of 5 come in free.");               //using predefined logic in which age-category customer is
+            else                                                                                             //using predefined logic in which age-category customer is
             {
                 Console.WriteLine("Standard Adult pricing: 120kr");
             }
             return;
         }
-        public static int CustomerGroup(int CustomerAmount = 0, int TotalPrice = 0)
+        public static int CustomerGroup(int CustomerAmount = 0, int TotalPrice = 0)                          // Calculating customers group age and the cost for the whole group.
         {
             Console.WriteLine("How many people will attend?");
             string? aInput = Console.ReadLine();
-            if (int.TryParse(aInput, out CustomerAmount))
+            if (int.TryParse(aInput, out CustomerAmount))                                                    // Parsing string to integer
             {
-                return CustomerAmount;
+                return CustomerAmount;                                                                       // Returning the value
             }
             else
             {
-                Console.WriteLine("Invalid input, no customers.");
+                Console.WriteLine("Invalid input, no customers.");                                           // Making sure that there is amount of customers.
                 return 0;
             }
         }
-        public static void CustomerAges(int CustomerAmount, int age)
+        public static AgeGroupCounters Counters = new AgeGroupCounters();                                    // Debug, if the menu is called multiple times to start with a fresh account
+        public static void CustomerAges(int CustomerAmount, int age)                                         // Supporting method for the CustomerGroup, checking in which age category is predefined customer.
         {
-            for (int i = 0; i < CustomerAmount; i++)
+            Counters.ResetCount();                                                                           // Making sure we're working with fresh set of data
+            for (int i = 0; i < CustomerAmount; i++)                                                         // Loop that's going through the whole group
             {
                 bool validInput = false;
 
                 while (!validInput)
                 {
-                    Console.WriteLine("Please state your age for customer number: " + (i + 1));
-                    string? aInput = Console.ReadLine();
+                    Console.WriteLine("Please state age of the customer: " + (i + 1));              // Prompt to user to determine age of every each attendee
+                    string? aInput = Console.ReadLine();                                                     // Reading off the user prompt
 
-                    if (int.TryParse(aInput, out age))
+                    if (int.TryParse(aInput, out age))                                                       // Converting string to integer value
                     {
-                        validInput = true;
-                        if (age < 5) BabyCount++;
-                        else if (age > 5 && age < 20) YouthCount++;
-                        else if (age >= 20 && age < 64) AdultCount++;
-                        else if (age > 64 && age < 100) SeniorCount++;
-                        else if (age > 100) ElderCount++;
-                        
+                        if (age >= 0)                                                                        // Checking for negative age
+                        {
+                            validInput = true;                                                                    // Using predefined logic to save the customer to a variable group
+                        }
+                        else
+                        {
+                            Console.WriteLine("Age can't be negative, try again. ");
+                        }
+                        if (age < 5) Counters.BabyCount++;                                                            // Using predefined logic to save the customer to a variable group
+                        else if (age > 5 && age < 20) Counters.YouthCount++;                                          // Using predefined logic to save the customer to a variable group
+                        else if (age >= 20 && age < 64) Counters.AdultCount++;                                        // Using predefined logic to save the customer to a variable group
+                        else if (age > 64 && age < 100) Counters.SeniorCount++;                                       // Using predefined logic to save the customer to a variable group
+                        else if (age > 100) Counters.ElderCount++;                                                    // Using predefined logic to save the customer to a variable group
                     }
                     else
                     {
-                        Console.WriteLine("The age is incorrect, try again.");
+                        Console.WriteLine("The age is incorrect, try again.");                               // Prompt to the user to write a proper age number
                     }
                 }
             }
         }
-        public static int CalculateTotalCost()
+        public static int CalculateTotalCost()                                                               // Simple method calculation of available age groups.
         {
-            return (YouthCount * 80) + (AdultCount * 120) + (SeniorCount * 90);
+            return (Counters.YouthCount * 80) + (Counters.AdultCount * 120) + (Counters.SeniorCount * 90);
             
         }
-        public static void CustomerMessage()
+        public static void CustomerMessage()                                                                 // Simple method of multiplying the message with a loop
         {
             Console.WriteLine("\nGive me your message");
             string? customerMessage = Console.ReadLine();
 
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 10; i++)                                                                     // Predefined loop logic that it has to do it 10 times
             {
                 Console.Write(customerMessage + " ");
             }
 
         }
-        public static bool CustomSplitter()
+        public static bool CustomSplitter()                                                                 // Method to fish out the third word in a sentence, programmed to avoid exceptions / spaces / tabs and similar
         {
             while (true)
             {
