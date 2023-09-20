@@ -59,6 +59,15 @@ namespace ExerciseLexicon2
                 
             }
         }
+
+        public static void GroupCalculation()                                   // Menu choice: 2 condensing the main menu
+        {
+            int customerCount = CustomerGroup();
+            CustomerAges(customerCount);
+            Console.WriteLine($"Amount of people: {customerCount}\n" +
+                              $"Total Cost for the group: {CalculateTotalCost()}kr");
+        }
+
         public static void CustomerMessage()                                    // Menu choice 3: Simple method of multiplying the message with a loop
         {
             Console.WriteLine("\nGive me your message");
@@ -158,5 +167,6 @@ namespace ExerciseLexicon2
         {
             return (Counters.YouthCount * 80) + (Counters.AdultCount * 120) + (Counters.SeniorCount * 90);
         }
+
     }
 }

@@ -51,6 +51,12 @@ namespace ExerciseLexicon2
         {
             Console.WriteLine("Invalid input, please try again. ");
         }
+
+        public static void ProgramExit()                                                // Method for quitting the program successfully
+        {
+            Console.WriteLine("Closing the application down, thank you.");                    
+            Environment.Exit(0);
+        }
     }
 }
 
